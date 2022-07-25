@@ -1,49 +1,30 @@
 import sys
-from collections import Counter
 
-num = int(sys.stdin.readline())
-k= 9
-alaphabet_num = []
-alaphabet = []
-z_where = []
-for i in range(num):
-    input = sys.stdin.readline().replace('\n','')
-    alaphabet.append(input)
-    alaphabet_num.append(len(input))
+n = int(sys.stdin.readline())
 
-alaphabet.sort(reverse=True, key=lambda x: len(x))
-alaphabet_num.sort(reverse=True)
-alaphabet.append(alaphabet[len(alaphabet)-1])
-alaphabet_num.append(alaphabet_num[len(alaphabet_num)-1])
-cnt = Counter(alaphabet[0])
+alpha = [] # 단어를 저장할 리스트
+alpha_dict = {} # 단어 내의 알파벳별로 수를 저장할 딕셔너리
+numList = [] # 수를 저장할 리스트
 
-for x in range(1, num):
-    cnt.update(alaphabet[x])
+for i in range(n): # 단어를 입력받음
+    alpha.append(sys.stdin.readline().rstrip())
 
-for y in range(num):
-    z = 0
-    while alaphabet_num[y] > alaphabet_num[y+1]:
-        replacement = alaphabet[y].replace(alaphabet[y][z:z+1], str(k))
-        alaphabet[y] = replacement
+for i in range(n): # 모든 단어에 대해서
+    for j in range(len(alpha[i])): # 단어의 길이만큼 실행
+        if alpha[i][j] in alpha_dict: # 단어의 알파벳이 이미 dict에 있으면
+            alpha_dict[alpha[i][j]] += 10 ** (len(alpha[i])-j-1) # 자리에 맞게 추가 ( 1의 자리면 1 )
+        else:   # 자리에 없으면 새로 추가 ( 10의 자리면 10 )
+            alpha_dict[alpha[i][j]] = 10 ** (len(alpha[i])-j-1)
 
-        alaphabet_num[y] -= 1
-        k -= 1
-        z += 1
-    z_where.append(z)
+for val in alpha_dict.values(): # dict에 저장된 수들을 모두 리스트에 추가
+    numList.append(val)
 
-for f in range(num):
-    for name in z_where:
-        standard = z_where[f]
-        if cnt.get(alaphabet[f][standard:standard+1]) > cnt.get(alaphabet[f+1][standard:standard+1]):
-            replacement = alaphabet[f].replace(alaphabet[f][standard:standard+1], str(k))
-            replacement_2 = alaphabet[f+1].replace(alaphabet[f+1][standard:standard+1], str(k-1))
-            alaphabet[f] = replacement
-            alaphabet[f+1] = replacement_2
-        else:
-            replacement = alaphabet[f].replace(alaphabet[f][standard:standard+1], str(k-1))
-            replacement_2 = alaphabet[f + 1].replace(alaphabet[f + 1][standard:standard+1], str(k))
-            alaphabet[f] = replacement
-            alaphabet[f + 1] = replacement_2
-        print(alaphabet)
-        k -= 1
-print(alaphabet)
+numList.sort(reverse=True) # 수들을 내림차순 정렬
+
+sum = 0
+pows = 9
+for i in numList: # 첫 번째 부터 가장 큰 부분을 차지하므로 9를 곱해준다
+    sum += pows * i
+    pows -= 1
+# 내려갈수록 그 알파벳이 차지하는 비중이 적으므로 -1
+print(sum)
