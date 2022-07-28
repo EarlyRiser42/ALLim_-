@@ -1,34 +1,37 @@
 import sys
 from collections import deque
 
-T = int(sys.stdin.readline())
-p = \
-    []
-n = []
-xn = []
+t = int(input())
 
-for i in range(T):
-    p.append(list(sys.stdin.readline().rstrip()))
-    n.append(int(sys.stdin.readline()))
-    if n[i] == 0:
-        xn.append(deque())
-        continue
-    xn.append(deque(sys.stdin.readline().rstrip()[1:-1].split(",")))
+for i in range(t):
+    p = sys.stdin.readline().rstrip()
+    n = int(input())
+    arr = sys.stdin.readline().rstrip()[1:-1].split(",")
+    queue = deque(arr)
 
-for x in range(T):
-    error_cnt = 0
-    for y in p[x]:
-        if y == 'R':
-            xn[x].reverse()
-        else:
-            try:
-                xn[x].popleft()
-            except:
-                print('error')
-                error_cnt += 1
+    rev, front, back = 0, 0, len(queue)-1
+    flag = 0
+    if n == 0:
+        queue = []
+        front = 0
+        back = 0
+
+    for j in p:
+        if j == 'R':
+            rev += 1
+        elif j == 'D':
+            if len(queue) < 1:
+                flag = 1
+                print("error")
                 break
-    if error_cnt == 0:
-        que = ''
-        for k in range(len(xn[x])):
-            que += str(xn[x][k]) + ','
-        print(f'[{que[:-1]}]')
+            else:
+                if rev % 2 == 0:
+                    queue.popleft()
+                else:
+                    queue.pop()
+    if flag == 0:
+        if rev % 2 == 0:
+            print("[" + ",".join(queue) + "]")
+        else:
+            queue.reverse()
+            print("[" + ",".join(queue) + "]")
