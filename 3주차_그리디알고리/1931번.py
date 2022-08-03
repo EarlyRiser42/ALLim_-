@@ -1,22 +1,19 @@
-from operator import itemgetter
+import sys
 
-num = int(input())  # 세로 길이 설정
-board = [[int(x) for x in input().split()]for y in range(num)]
-ans = []
+num = int(sys.stdin.readline())  # 세로 길이 설정
+board_pre = []
+for _ in range(num):
+    board_pre.append(list(map(int, sys.stdin.readline().split())))
 
-board.sort(key=itemgetter(1), reverse=False)
+ans = 1
 
-i = 0
+board = sorted(board_pre, key=lambda x: (x[1], x[0]))
 
-for y in range(num):
-    if board[i][1] < board[y][0]:
-        ans.append(board[i])
-        i = y
+max_ = board[0][1]
 
-if len(ans) == 0:
-    ans.append(board[0])
+for i in range(1, num):
+    if board[i][0] >= max_:
+        ans += 1
+        max_ = board[i][1]
 
-if board[num-1][0] > ans[len(ans)-1][1]:
-    ans.append(board[num-1])
-
-print(len(ans))
+print(ans)
