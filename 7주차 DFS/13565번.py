@@ -1,15 +1,16 @@
 import sys
-sys.setrecursionlimit(1000000)
+sys.setrecursionlimit(10**9)
+
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
 
 
 def dfs(x, y):
     visited[x][y] = True
-    dx = [0, 1, 0, -1]
-    dy = [1, 0, -1, 0]
     for k in range(4):
         nx = x + dx[k]
         ny = y + dy[k]
-        if 0 <= nx < M and 0 <= ny < N and not visited[nx][ny] and graph[nx][ny] == 0:
+        if 0 <= nx < M and 0 <= ny < N and graph[nx][ny] == 0 and not visited[nx][ny]:
             dfs(nx, ny)
 
 
@@ -26,6 +27,6 @@ for y in range(N):
         dfs(0, y)
 
 if True in visited[M-1]:
-    print('Yes')
+    print('YES')
 else:
-    print('No')
+    print('NO')
