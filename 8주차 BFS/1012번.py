@@ -34,5 +34,3 @@ for _ in range(T):
                 graph[row][col] = 0
                 cnt += 1
     print(cnt)
-
-

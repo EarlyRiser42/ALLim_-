@@ -2,7 +2,6 @@ import sys
 
 
 def dfs(n):
-
     for i in tree[n]:
         if par[i] == 0:
             par[i] = n
