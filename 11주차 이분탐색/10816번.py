@@ -1,3 +1,4 @@
+from bisect import bisect_left, bisect_right
 import sys
 
 N = int(sys.stdin.readline())
@@ -14,14 +15,17 @@ for i in range(M):
     target = how_many[i]
     left, right = 0, N-1
     mid = (left + right) // 2
+
     while left < right:
         mid = (left+right) // 2
         if own_card[mid] == target:
             left = right = mid
         elif own_card[mid] > target:
             right = mid - 1
+
         else:
             left = mid + 1
+
     standard_right, standard_left = mid, mid
     if own_card[mid] == how_many[i]:
         cnt += 1
