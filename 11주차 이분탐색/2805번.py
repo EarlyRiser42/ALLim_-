@@ -7,7 +7,6 @@ start, end = 1, max(tree)
 
 while start <= end:
     mid = (start + end) // 2
-
     cnt = 0
     for tre in tree:
         if tre >= mid:
