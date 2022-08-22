@@ -31,7 +31,6 @@ for _ in range(N-1):
 visited = [[False]*N for i in range(N)]
 
 for min_ in range(max(map(max, graph))):
-    print(min_)
     land_num = 0
     for alpha in range(N):
         for beta in range(N):
