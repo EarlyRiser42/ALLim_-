@@ -43,7 +43,6 @@ for row in range(N):
 
 bfs(tomato)
 
-
 for row_ in range(N):
     if 0 in graph[row_]:
         print(-1)

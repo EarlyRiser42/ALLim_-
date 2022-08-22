@@ -14,9 +14,9 @@ start, end = 0, 2*C
 
 while abs(start-end) > tol:
     mid = (start+end) / 2
-    if f(mid) <= 0:
-        start = mid
-    else:
+    if sign(f(start)) != sign(f(mid)):
         end = mid
+    elif sign(f(end)) != sign(f(mid)):
+        start = mid
 
 print(mid)
