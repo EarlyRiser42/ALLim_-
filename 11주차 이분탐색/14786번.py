@@ -12,15 +12,11 @@ def f(x):
 tol = 10**(-9)
 start, end = 0, C
 
-while start <= end:
+while abs(start-end) > tol:
     mid = (start+end) / 2
-    if f(mid) == 0 or (end - start) < tol:
-        print(mid)
-        sys.exit(0)
-    if sign(mid) == sign(start):
-        start = mid + 1
-    else:
-        end = mid - 1
-print(end, start)
-print(end-start)
+    if sign(f(start)) != sign(f(mid)):
+        end = mid
+    elif sign(f(end)) != sign(f(mid)):
+        start = mid
+
 print(mid)
