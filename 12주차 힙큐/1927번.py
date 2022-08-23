@@ -11,7 +11,6 @@ for i in range(N):
             print(0)
         else:
             pop = heapq.heappop(h)
-            print(pop[1])
+            print(pop)
     else:
-        heapq.heappush(h, (-input_, input_))
-
+        heapq.heappush(h, input_)
