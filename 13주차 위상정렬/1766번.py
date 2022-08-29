@@ -27,9 +27,13 @@ for k in range(N):
         left.append(N-k)
 
 rslt.reverse()
-for g in (left):
-    b = bisect_left(rslt, g)
-    rslt.insert(b, g)
+left.sort()
 
-[print(k, end=' ') for k in rslt]
+for rs in range(0, len(rslt), 2):  # 4 2
+    index = bisect_left(left, rslt[rs])
+    left.insert(index, rslt[rs])
+    index2 = bisect_left(left[index:], rslt[rs+1])
+    left.insert(index+index2+1, rslt[rs+1])
+
+[print(k, end=' ') for k in left]
 
