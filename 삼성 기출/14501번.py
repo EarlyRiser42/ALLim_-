@@ -1,14 +1,17 @@
-N = int(input())
-T, P = [], []
-for i in range(N):
-    T_pre, P_pre = map(int, input().split())
-    if T_pre+i <= N:
-        T.append(T_pre)
-        P.append(P_pre)
+import sys
 
-dp = [0 for _ in range(len(T))]
+input = sys.stdin.readline
+n = int(input())
+# n일까지 벌 수 있는 최대수익을 저장,
+d = [0] * 20
+tplist = [[0, 0]]
+for _ in range(n):
+    t, p = map(int, input().split())
+    tplist.append([t, p])
 
-for j in range(len(T)):
-    dp[j] = max(dp[j], P[j] + dp[j+T[j]])
+for i in range(1, n + 1):
+    x = tplist[i][0] - 1
+    d[i] = max(d[i - 1], d[i])
+    d[i + x] = max(d[i - 1] + tplist[i][1], d[i + x])
 
-print(dp[-1])
+print(d[n])
