@@ -1,23 +1,25 @@
 def solution(id_list, report, k):
-    count, ans, cash = {}, {}, set()
-    for idd in id_list:
-        count[idd] = 0
-    for iddd in id_list:
-        ans[iddd] = 0
+    answer = [0] * len(id_list)
+    idx_of = {}
+    reporters = [set() for _ in range(len(id_list))]
 
-    for singo in report:
-        if singo not in cash:
-            count[singo.split(' ')[1]] += 1
-            cash.add(singo)
+    for name in range(len(id_list)):
+        idx_of[id_list[name]] = name
 
-    susppend_users = []
-    for key in id_list:
-        if count[key] >= k:
-            susppend_users.append(key)
+    print(idx_of)
 
-    for users in susppend_users:
-        for ca in cash:
-            if ca.split(' ')[1] == users:
-                ans[ca.split(' ')[0]] += 1
-    answer = list(ans.values())
+    for name in report:
+        rpter, rpted = name.split()
+        reporters[idx_of[rpted]].add(idx_of[rpter])
+
+    print(reporters)
+
+    for i in range(len(id_list)):
+        if len(reporters[i]) >= k:
+            for j in reporters[i]:
+                answer[j] += 1
+
     return answer
+
+a= solution(["muzi", "frodo", "apeach", "neo"], ["muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi"], 2)
+print(a)
