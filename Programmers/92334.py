@@ -3,6 +3,7 @@ def solution(id_list, report, k):
     idx_of = {}
     reporters = [set() for _ in range(len(id_list))]
 
+    # name에 숫자를 mapping함으로써 dictionary(14줄), set 접근을 원활하게 함
     for name in range(len(id_list)):
         idx_of[id_list[name]] = name
 
