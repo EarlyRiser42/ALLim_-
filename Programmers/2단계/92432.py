@@ -1,13 +1,13 @@
-def dfs(n, i, candidate, arrow, ans, visited):
-    visited[i] = True
+def dfs(n, i, candidate, arrow, ans):
+    print(ans)
+    if arrow == n:
+        return ans
     if arrow + candidate[1][i] <= n:
         arrow += candidate[1][i]
-        ans[i] = candidate[1][i]
+        ans.append(candidate[1][i])
     if i+1 < 11:
-        dfs(n, i+1, candidate, arrow, ans, visited)
-        visited[i+1] = False
-    print(ans)
-    return ans
+        dfs(n, i+1, candidate, arrow, ans)
+        ans.pop()
 
 
 def solution(n, info):
@@ -19,9 +19,8 @@ def solution(n, info):
     max_score = 0
     answer = list(range(len(info)))
     for i in range(10):
-        ans = [0 for _ in range(len(info))]
-        visited = [False for _ in range(len(info))]
-        result = dfs(n, i, candidate, 0, ans, visited)
+        ans = []
+        result = dfs(n, i, candidate, 0, ans)
         print(i, result)
         score = 0
         # 라이언의 점수 계산
