@@ -1,34 +1,25 @@
-from itertools import combinations
-
-
-def get_gyojum(line1, line2):
-    if line1[0] == line2[0]:
-        return False
-    elif line1[0] == 0:
-        y = -line1[2]
-        x = -line2[1] / line2[0]
-        return (x, y)
-    elif line2[0] == 0:
-        y = -line2[2]
-        x = -line1[1] / line1[0]
-        return (x, y)
-    elif line1[1] == 0:
-        x = -line1[2]
-        y = -line2[2] / line2[1]
-        return (x, y)
-    elif line2[1] == 0:
-        x = -line2[2]
-        y = -line1[2] / line1[1]
-        return (x, y)
-    else:
-        A = -line2[0] / line1[0]
-        y = (-A * line1[2] + line2[2]) / (A * line1[1] - line2[1])
-        x = (-line1[2] - line1[0] * y) / line1[0]
-        return (x, y)
-
-
 def solution(line):
-    answer = []
-    line_com = list(combinations(line, 2))
-    print(line_com)
-    return answer
+    gyojum_list = []
+    for i in range(len(line)):
+        for j in range(i + 1, len(line)):
+            a, b, e = line[i]
+            c, d, f = line[j]
+            if a * d - b * c != 0:
+                x, y = (b * f - e * d) / (a * d - b * c), (e * c - a * f) / (a * d - b * c)
+                if x.is_integer() and y.is_integer():
+                    x, y = int(x), int(y)
+                    if (x, y) not in gyojum_list:
+                        gyojum_list.append((x, y))
+    print(max(gyojum_list))
+    x_min, x_max, y_min, y_max = min(gyojum_list)[0], max(gyojum_list)[0], min(gyojum_list, key=lambda x: x[1])[1], \
+                                 max(gyojum_list, key=lambda x: x[1])[1]
+
+    board = [['.']*(abs(x_max-x_min)+1) for _ in range((abs(y_max-y_min)+1))]
+
+    for gyojums in gyojum_list:
+        x, y = abs(y_max - int(gyojums[1])), abs(x_min - int(gyojums[0]))
+        board[x][y] = '*'
+    for i, v in enumerate(board):
+        board[i] = ''.join(v)
+    return board
+
