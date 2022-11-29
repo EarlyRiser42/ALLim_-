@@ -1,48 +1,55 @@
-def dfs(n, i, candidate, arrow, ans):
-    print(ans)
-    if arrow == n:
-        return ans
-    if arrow + candidate[1][i] <= n:
-        arrow += candidate[1][i]
-        ans.append(candidate[1][i])
-    if i+1 < 11:
-        dfs(n, i+1, candidate, arrow, ans)
-        ans.pop()
+import copy
+
+MAX_SCORE_DIFF = 0
+answers = []
+
+
+# 라이언과 어피치의 점수 차이를 계산하는 함수
+def calcScoreDiff(info, myshots):
+    enemyScore, myScore = 0, 0
+    for i in range(11):
+        if (info[i], myshots[i]) == (0, 0):
+            continue
+        if info[i] >= myshots[i]:
+            enemyScore += (10 - i)
+        else:
+            myScore += (10 - i)
+    return myScore - enemyScore
+
+
+def dfs(info, myshots, n, i):
+    global MAX_SCORE_DIFF, answers
+    if i == 11:
+        if n != 0:
+            myshots[10] = n
+        scoreDiff = calcScoreDiff(info, myshots)
+        if scoreDiff <= 0:
+            return
+        result = copy.deepcopy(myshots)
+        if scoreDiff > MAX_SCORE_DIFF:
+            MAX_SCORE_DIFF = scoreDiff
+            answers = [result]
+            return
+        if scoreDiff == MAX_SCORE_DIFF:
+            answers.append(result)
+        return
+
+    # 점수 먹는 경우
+    if info[i] < n:
+        myshots.append(info[i] + 1)
+        dfs(info, myshots, n - info[i] - 1, i + 1)
+        myshots.pop()
+
+    # 점수 안먹는 경우
+    myshots.append(0)
+    dfs(info, myshots, n, i + 1)
+    myshots.pop()
 
 
 def solution(n, info):
-    # 라이언이 점수를 획득하기 위해 과녁별로 맞춰야 하는 화살의 갯수, 점수 배열
-    candidate = [list(range(10,-1,-1)) for __ in range(2)]
-    for i in range(10):
-        candidate[1][i] = info[i]+1
-    print(candidate[1])
-    max_score = 0
-    answer = list(range(len(info)))
-    for i in range(10):
-        ans = []
-        result = dfs(n, i, candidate, 0, ans)
-        print(i, result)
-        score = 0
-        # 라이언의 점수 계산
-        for k in range(10):
-            if result[k] != 0:
-                score += candidate[0][k]
-        if score > max_score:
-            max_score, answer = score, result
-        # 라이언의 점수가 같으면 낮은 과녁을 많이 맞춘 것을 선택
-        elif score == max_score:
-            print(answer, result)
-            for j in range(10,-1,-1):
-                if result[j] > answer[j]:
-                    answer = result
-                    break
-    # 어피치 점수 계산 (한번만 계산해도 됌)
-    appeach_score = 0
-    for k in range(10):
-        if info[k] > answer[k]:
-            appeach_score += candidate[0][k]
-    if appeach_score > max_score:
+    global MAX_SCORE_DIFF, answers
+    dfs(info, [], n, 0)
+    if answers == []:
         return [-1]
-    return answer
-
-print(solution(9,[0,0,1,2,0,1,1,1,1,1,1]))
+    answers.sort(key=lambda x: x[::-1], reverse=True)
+    return answers[0]
