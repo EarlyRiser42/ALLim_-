@@ -1,28 +1,35 @@
-def solution(info, query):
-    answer = [0 for _ in range(len(query))]
-    info.sort(key=lambda x:int(x.split()[-1]), reverse=True)
-    information = {}
-    for i in range(len(info)):
-        key_value = info[i].split()
-        information[str(key_value[:-1])] = int(key_value[-1])
-    print(information)
-    for j in range(len(query)):
-        que = query[j].split()
-        for ins in list(information.keys()):
-            cash = 0
-            print(ins, information[ins])
-            if information[ins] >= int(que[-1]):
-                for i in range(0, 7, 2):
-                    if que[i] == '-':
-                        continue
-                    if que[i] not in ins:
-                        cash = 1
-                        break
-                if cash == 0:
-                    answer[j] += 1
-            else:
-                break
+from itertools import combinations
+from collections import defaultdict
+from bisect import bisect_left
+
+
+def solution(information, queries):
+    answer = []
+    dic = defaultdict(list)
+    for info in information:
+        info = info.split()
+        condition = info[:-1]
+        score = int(info[-1])
+        for i in range(5):
+            case = list(combinations([0,1,2,3], i))
+            for c in case:
+                tmp = condition.copy()
+                for idx in c:
+                    tmp[idx] = "-"
+                key = ''.join(tmp)
+                dic[key].append(score)
+    for value in dic.values():
+        value.sort()
+
+    for query in queries:
+        query = query.replace("and ", "")
+        query = query.split()
+        target_key = ''.join(query[:-1])
+        target_score = int(query[-1])
+        count = 0
+        if target_key in dic:
+            target_list = dic[target_key]
+            idx = bisect_left(target_list, target_score)
+            count = len(target_list) - idx
+        answer.append(count)
     return answer
-
-
-print(solution(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"], ["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"]))
