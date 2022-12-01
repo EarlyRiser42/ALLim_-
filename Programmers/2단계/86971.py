@@ -1,32 +1,34 @@
-def dfs(parent, array, visit):
-    global i
-    i += 1
-    visit[parent] = True
-    for child in array[parent]:
+from copy import deepcopy
+
+def dfs(node, array, visit):
+    global num
+    num += 1
+    visit[node] = True
+    for child in array[node]:
         if not visit[child]:
             dfs(child, array, visit)
     return
 
 
 def solution(n, wires):
-    top = [[] for _ in range(n+1)]
-    visited = [False for __ in range(n+1)]
-    answer = 0
-    for wire in wires:
-        top[wire[0]].append(wire[1])
-        top[wire[1]].append(wire[0])
-    global i
-    print(top)
-    i = 0
-    for j in range(1, n+1):
-        top_cash = top.copy()
-        child = top_cash[j]
-        for ch in child:
-            del top_cash[ch][top_cash[ch].index(j)]
-        top_cash[j] = []
-    dfs(1, top, visited)
-    print(i)
+    global num
+    answer = 100
+    for i in range(len(wires)):
+        wire = deepcopy(wires)
+        a, b = wire[i][0], wire[i][1]
+        del wire[i]
+        top = [[] for _ in range(n+1)]
+        for wir in wire:
+            top[wir[0]].append(wir[1])
+            top[wir[1]].append(wir[0])
+        visited = [False for __ in range(n+1)]
+        num = 0
+        dfs(a, top, visited)
+        first = num
+        visited = [False for __ in range(n + 1)]
+        num = 0
+        dfs(b, top, visited)
+        second = num
+        if abs(first-second) < answer:
+            answer = abs(first-second)
     return answer
-
-
-print(solution(9, [[1,3],[2,3],[3,4],[4,5],[4,6],[4,7],[7,8],[7,9]]	))
