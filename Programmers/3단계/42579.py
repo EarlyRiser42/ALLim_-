@@ -10,7 +10,7 @@ def solution(genres, plays):
     for i in range(len(plays)):
         sum[genres[i]] += plays[i]
     test = sorted(list(sum.items()), key=lambda x:x[1], reverse=True)
-    print(test)
+
     for i in range(len(plays)):
         plays[i] = (i, plays[i])
 
@@ -27,6 +27,3 @@ def solution(genres, plays):
         else:
             answer.append(dic[key[0]][0][0])
     return answer
-
-
-print(solution(["classic", "pop", "classic", "classic", "pop", 'pop'], [500, 600, 150, 800, 2500, 2500]))
