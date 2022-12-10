@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-
 def solution(genres, plays):
     answer = []
     dic = defaultdict(list)
