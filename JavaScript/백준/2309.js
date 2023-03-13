@@ -1,4 +1,6 @@
 let nums = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n").map(i => parseInt(i));
+//let nums = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n").map(i => parseInt(i));
+
 let arr;
 for (let i=0; i<8; i++) {
     for (let j=i+1; j<9; j++) {
