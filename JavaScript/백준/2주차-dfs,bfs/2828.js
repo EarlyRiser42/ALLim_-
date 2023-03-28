@@ -1,5 +1,6 @@
 const fs = require('fs');
-const inpu = fs.readFileSync("./dev/stdin").toString().trim().split('\n');
+//const inpu = fs.readFileSync("./dev/stdin").toString().trim().split('\n');
+let inpu = fs.readFileSync("input.txt").toString().trim().split('\r\n');
 
 const [N,M] = inpu[0].split(' ').map(a=>Number(a))
 const J = Number(inpu[1])

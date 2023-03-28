@@ -1,5 +1,5 @@
 const fs = require('fs');
-//const inpu = fs.readFileSync("./dev/stdin").toString().trim().split('\n');
+//const inpu = fs.readFileSync("/dev/stdin").toString().trim().split('\n');
 let inpu = fs.readFileSync("input.txt").toString().trim().split('\r\n');
 
 // DFS 함수 정의
