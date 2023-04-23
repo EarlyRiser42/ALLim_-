@@ -18,14 +18,15 @@ function solution(r1, r2) {
     y= 1
 
     while(x){
-        if(Math.sqrt(x**2+y**2) < r1){
+        if(Math.sqrt(x**2+y**2) >= r1){
+            x--
+        }
+        else{
             r1_sum += x
             y++
         }
-        else{
-            x--
-        }
     }
+
     r1_sum *= 4
     r1_sum += 4*r1
     return r2_sum - r1_sum + 4;
